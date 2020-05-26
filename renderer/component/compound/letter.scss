@@ -1,6 +1,12 @@
 @charset "utf-8";
 
 
+@mixin set-color($color) {
+  --color: #{$color};
+  --border-color: #{darken(saturate($color, 20%), 40%)};
+}
+
+
 .letter-root {
   font-family: "PT Serif";
   font-weight: 900;
@@ -9,17 +15,17 @@
 }
 
 .letter-digit {
-  color: darken(saturate(hsl(280, 40%, 50%), 20%), 40%);
+  color: var(--border-color);
   position: relative;
   z-index: 1;
 }
 
 .letter-digit::before {
-  background-color: hsl(280, 40%, 50%);
+  text-shadow: none;
+  background-color: var(--color);
   background-image: linear-gradient(to bottom, rgba(white, 0.8), rgba(white, 0));
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: none;
   content: attr(data-char);
   position: absolute;
   z-index: 2;
@@ -33,4 +39,8 @@
 .small {
   font-size: 40px;
   text-shadow: 1.4px 0px 0px, -1.4px 0px 0px, 0px 1.4px 0px, 0px -1.4px 0px, 0.7px 0.7px 0px, -0.7px 0.7px 0px, 0.7px -0.7px 0px, -0.7px -0.7px 0px;
+}
+
+.monday {
+  @include set-color(hsl(280, 40%, 50%));
 }
