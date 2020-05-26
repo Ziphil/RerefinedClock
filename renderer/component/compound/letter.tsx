@@ -29,7 +29,8 @@ export class Letter extends Component<Props, State> {
     let digitClassNames = ["letter-digit", "monday"];
     let string = this.createString();
     let stringNodes = string.split("").map((char, index) => {
-      return <div className={digitClassNames.join(" ")} data-char={char} key={index}>{char}</div>;
+      let stringNode = <div className={digitClassNames.join(" ")} data-char={char} key={index}>{char}</div>;
+      return stringNode;
     });
     let node = (
       <div className={classNames.join(" ")}>
