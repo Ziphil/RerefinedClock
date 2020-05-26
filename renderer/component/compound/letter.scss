@@ -3,13 +3,34 @@
 
 .letter-root {
   font-family: "PT Serif";
-  font-size: 88px;
   font-weight: 900;
   line-height: 1;
+  display: flex;
+}
+
+.letter-digit {
+  color: darken(saturate(hsl(280, 40%, 50%), 20%), 40%);
+  position: relative;
+  z-index: 1;
+}
+
+.letter-digit::before {
   background-color: hsl(280, 40%, 50%);
   background-image: linear-gradient(to bottom, rgba(white, 0.8), rgba(white, 0));
   background-clip: text;
-  -webkit-text-stroke: 2px darken(saturate(hsl(280, 60%, 50%), 20%), 40%);
   -webkit-text-fill-color: transparent;
-  display: flex;
+  text-shadow: none;
+  content: attr(data-char);
+  position: absolute;
+  z-index: 2;
+}
+
+.large {
+  font-size: 88px;
+  text-shadow: 2px 0px 0px, -2px 0px 0px, 0px 2px 0px, 0px -2px 0px, 1px 1px 0px, -1px 1px 0px, 1px -1px 0px, -1px -1px 0px;
+}
+
+.small {
+  font-size: 40px;
+  text-shadow: 1.4px 0px 0px, -1.4px 0px 0px, 0px 1.4px 0px, 0px -1.4px 0px, 0.7px 0.7px 0px, -0.7px 0.7px 0px, 0.7px -0.7px 0px, -0.7px -0.7px 0px;
 }
