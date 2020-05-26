@@ -18,10 +18,15 @@ export class Letter extends Component<Props, State> {
   };
 
   private createString(): string {
-    let padChar = (typeof this.props.content === "number") ? "0" : " ";
-    let preceding = new Array(this.props.length).join(padChar);
-    let string = (preceding + this.props.content.toString()).slice(-this.props.length);
-    return string;
+    let content = this.props.content;
+    if (content !== null) {
+      let padChar = (typeof this.props.content === "number") ? "0" : " ";
+      let preceding = new Array(this.props.length).join(padChar);
+      let string = (preceding + content.toString()).slice(-this.props.length);
+      return string;
+    } else {
+      return "";
+    }
   }
 
   public render(): ReactNode {
@@ -44,7 +49,7 @@ export class Letter extends Component<Props, State> {
 
 
 type Props = {
-  content: number | string,
+  content: number | string | null,
   length: number,
   size: "large" | "small"
 };
