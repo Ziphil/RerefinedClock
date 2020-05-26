@@ -16,6 +16,10 @@ import {
 
 
 const COMMON_WINDOW_OPTIONS = {
+  transparent: true,
+  frame: false,
+  toolbar: false,
+  alwaysOnTop: true,
   resizable: true,
   fullscreenable: false,
   autoHideMenuBar: true,
