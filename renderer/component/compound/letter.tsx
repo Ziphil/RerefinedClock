@@ -13,7 +13,8 @@ export class Letter extends Component<Props, State> {
 
   public static defaultProps: Props = {
     content: "",
-    length: 1
+    length: 1,
+    size: "large"
   };
 
   private createString(): string {
@@ -24,12 +25,13 @@ export class Letter extends Component<Props, State> {
   }
 
   public render(): ReactNode {
+    let classNames = ["letter-root", this.props.size];
     let string = this.createString();
     let stringNodes = string.split("").map((char, index) => {
-      return <div className="letter-digit" key={index}>{char}</div>;
+      return <div className="letter-digit" data-char={char} key={index}>{char}</div>;
     });
     let node = (
-      <div className="letter-root">
+      <div className={classNames.join(" ")}>
         {stringNodes}
       </div>
     );
@@ -41,7 +43,8 @@ export class Letter extends Component<Props, State> {
 
 type Props = {
   content: number | string,
-  length: number
+  length: number,
+  size: "large" | "small"
 };
 type State = {
 };

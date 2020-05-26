@@ -1,6 +1,13 @@
 @charset "utf-8";
 
 
-.time {
+.time,
+.date,
+.hairia {
   display: flex;
+}
+
+.date-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
