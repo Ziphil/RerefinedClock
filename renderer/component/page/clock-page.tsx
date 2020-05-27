@@ -28,25 +28,31 @@ export class ClockPage extends PageComponent<Props, State> {
     mode: "gregorian"
   };
 
+  public constructor(props: any) {
+    super(props);
+    this.toggleMode = this.toggleMode.bind(this);
+  }
+
   public async componentDidMount(): Promise<void> {
-    this.timer = setInterval(() => {
-      this.setState({});
-    }, 10);
-    window.addEventListener("keydown", (event) => {
-      let key = event.key;
-      if (key === "ArrowRight") {
-        let mode = CalendarModeUtil.next(this.state.mode);
-        this.setState({mode});
-      } else if (key === "ArrowLeft") {
-        let mode = CalendarModeUtil.previous(this.state.mode);
-        this.setState({mode});
-      }
-    });
+    this.timer = setInterval(() => this.setState({}), 10);
+    window.addEventListener("keydown", this.toggleMode);
   }
 
   public async componentWillUnmount(): Promise<void> {
     if (this.timer !== null) {
       clearInterval(this.timer);
+    }
+    window.removeEventListener("keydown", this.toggleMode);
+  }
+
+  private toggleMode(event: KeyboardEvent): void {
+    let key = event.key;
+    if (key === "ArrowRight") {
+      let mode = CalendarModeUtil.next(this.state.mode);
+      this.setState({mode});
+    } else if (key === "ArrowLeft") {
+      let mode = CalendarModeUtil.previous(this.state.mode);
+      this.setState({mode});
     }
   }
 
