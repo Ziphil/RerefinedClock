@@ -105,7 +105,7 @@ class Main {
   }
 
   private createMainWindow(): BrowserWindow {
-    let options = {width: 400, height: 200, minWidth: 400, minHeight: 200};
+    let options = {width: 380, height: 200, minWidth: 380, minHeight: 200};
     let window = this.createWindow("clock", null, {}, options);
     this.connectReloadClient(window);
     return window;

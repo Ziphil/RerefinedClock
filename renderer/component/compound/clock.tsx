@@ -26,9 +26,9 @@ export class Clock extends Component<Props, State> {
         <div className="date-wrapper">
           <div className="date">
             <Letter content={calendar.year} length={4} weekday={weekday} size="small"/>
-            <Letter content="/" weekday={weekday} size="small"/>
+            <Letter className="slash" content="/" weekday={weekday} size="small"/>
             <Letter content={calendar.month} length={2} weekday={weekday} size="small"/>
-            <Letter content="/" weekday={weekday} size="small"/>
+            <Letter className="slash" content="/" weekday={weekday} size="small"/>
             <Letter content={calendar.day} length={2} weekday={weekday} size="small"/>
           </div>
           <div className="hairia">
@@ -37,9 +37,9 @@ export class Clock extends Component<Props, State> {
         </div>
         <div className="time">
           <Letter content={calendar.hour} length={2} weekday={weekday}/>
-          <Letter content=":" weekday={weekday}/>
+          <Letter className="colon" content=":" weekday={weekday}/>
           <Letter content={calendar.minute} length={2} weekday={weekday}/>
-          <Letter content=":" weekday={weekday}/>
+          <Letter className="colon" content=":" weekday={weekday}/>
           <Letter content={calendar.second} length={2} weekday={weekday}/>
         </div>
       </div>

@@ -35,7 +35,7 @@ export class Letter extends Component<Props, State> {
   }
 
   public render(): ReactNode {
-    let classNames = ["letter-root", this.props.size];
+    let classNames = ["letter-root", this.props.size, this.props.className];
     let digitClassNames = ["letter-digit", this.props.weekday];
     let string = this.createString();
     let stringNodes = string.split("").map((char, index) => {
@@ -57,7 +57,8 @@ type Props = {
   content: number | string | null,
   length: number,
   weekday: Weekday,
-  size: "large" | "small"
+  size: "large" | "small",
+  className?: string
 };
 type State = {
 };
