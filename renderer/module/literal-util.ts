@@ -17,19 +17,21 @@ export class LiteralUtilType<T extends string> {
     this.is = is;
   }
 
-  public cast(value: string | number): T {
+  public cast(value: string | number | null): T {
     if (typeof value === "string") {
       if (this.is(value)) {
         return value;
       } else {
         return this.defaultValue;
       }
-    } else {
+    } else if (typeof value === "number") {
       if (value >= 0 && value < this.values.length) {
         return this.values[value];
       } else {
         return this.defaultValue;
       }
+    } else {
+      return this.defaultValue;
     }
   }
 
