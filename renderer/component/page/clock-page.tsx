@@ -86,5 +86,5 @@ type State = {
 };
 
 const CALENDAR_MODES = ["gregorian", "hairian", "stopwatch"] as const;
-let CalendarModeUtil = LiteralUtilType.create(CALENDAR_MODES);
-type CalendarMode = LiteralType<typeof CALENDAR_MODES>;
+export let CalendarModeUtil = LiteralUtilType.create(CALENDAR_MODES);
+export type CalendarMode = LiteralType<typeof CALENDAR_MODES>;

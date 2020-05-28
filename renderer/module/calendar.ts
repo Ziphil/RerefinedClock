@@ -10,6 +10,7 @@ export abstract class Calendar {
   public year: number | null = null;
   public month: number | null = null;
   public day: number | null = null;
+  public weekday: number | null = null;
   public hairia: number | null = null;
   public hour: number | null = null;
   public minute: number | null = null;
@@ -36,6 +37,7 @@ export class HairianCalendar extends Calendar {
     this.year = rawYear + 1;
     this.month = FloorMath.div(remainder, 33) + 1;
     this.day = FloorMath.mod(remainder, 33) + 1;
+    this.weekday = date.getDay();
     this.hairia = dayCount - 547862;
     this.hour = FloorMath.div(secondCount, 10000);
     this.minute = FloorMath.div(FloorMath.mod(secondCount, 10000), 100);
@@ -53,6 +55,7 @@ export class GregorianCalendar extends Calendar {
     this.year = date.getFullYear();
     this.month = date.getMonth() + 1;
     this.day = date.getDate();
+    this.weekday = date.getDay();
     this.hairia = dayCount + 1;
     this.hour = date.getHours();
     this.minute = date.getMinutes();

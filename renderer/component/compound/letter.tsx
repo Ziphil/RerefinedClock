@@ -5,6 +5,10 @@ import {
   ReactNode
 } from "react";
 import {
+  LiteralType,
+  LiteralUtilType
+} from "../../module/literal-util";
+import {
   Component
 } from "../component";
 
@@ -14,6 +18,7 @@ export class Letter extends Component<Props, State> {
   public static defaultProps: Props = {
     content: "",
     length: 1,
+    weekday: "sunday",
     size: "large"
   };
 
@@ -31,7 +36,7 @@ export class Letter extends Component<Props, State> {
 
   public render(): ReactNode {
     let classNames = ["letter-root", this.props.size];
-    let digitClassNames = ["letter-digit", "monday"];
+    let digitClassNames = ["letter-digit", this.props.weekday];
     let string = this.createString();
     let stringNodes = string.split("").map((char, index) => {
       let stringNode = <div className={digitClassNames.join(" ")} data-char={char} key={index}>{char}</div>;
@@ -51,7 +56,12 @@ export class Letter extends Component<Props, State> {
 type Props = {
   content: number | string | null,
   length: number,
+  weekday: Weekday,
   size: "large" | "small"
 };
 type State = {
 };
+
+const WEEKDAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] as const;
+export let WeekdayUtil = LiteralUtilType.create(WEEKDAYS);
+export type Weekday = LiteralType<typeof WEEKDAYS>;

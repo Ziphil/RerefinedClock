@@ -41,6 +41,30 @@
   text-shadow: 1.4px 0px 0px, -1.4px 0px 0px, 0px 1.4px 0px, 0px -1.4px 0px, 0.7px 0.7px 0px, -0.7px 0.7px 0px, 0.7px -0.7px 0px, -0.7px -0.7px 0px;
 }
 
+.sunday {
+  @include set-color(hsl(0, 40%, 50%));
+}
+
 .monday {
   @include set-color(hsl(280, 40%, 50%));
+}
+
+.tuesday {
+  @include set-color(hsl(30, 40%, 50%));
+}
+
+.wednesday {
+  @include set-color(hsl(180, 40%, 50%));
+}
+
+.thursday {
+  @include set-color(hsl(120, 40%, 50%));
+}
+
+.friday {
+  @include set-color(hsl(60, 40%, 50%));
+}
+
+.saturday {
+  @include set-color(hsl(220, 40%, 50%));
 }
