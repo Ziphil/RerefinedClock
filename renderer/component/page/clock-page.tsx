@@ -22,8 +22,6 @@ import {
 
 export class ClockPage extends PageComponent<Props, State> {
 
-  private timer: any | null = null;
-
   public state: State = {
     mode: "gregorian",
     shift: true,
@@ -31,24 +29,14 @@ export class ClockPage extends PageComponent<Props, State> {
     hairianCalendar: new HairianCalendar()
   };
 
-  public constructor(props: any) {
-    super(props);
-    this.toggleMode = this.toggleMode.bind(this);
-  }
-
   public async componentDidMount(): Promise<void> {
-    this.timer = setInterval(() => this.setState({}), 10);
+    setInterval(() => {
+      this.setState({});
+    }, 10);
     window.addEventListener("keydown", (event) => {
       this.toggleMode(event);
       this.toggleShift(event);
     });
-  }
-
-  public async componentWillUnmount(): Promise<void> {
-    if (this.timer !== null) {
-      clearInterval(this.timer);
-    }
-    window.removeEventListener("keydown", this.toggleMode);
   }
 
   private toggleMode(event: KeyboardEvent): void {
