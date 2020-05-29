@@ -3,7 +3,7 @@
 
 @mixin set-color($color) {
   --color: #{$color};
-  --border-color: #{darken(saturate($color, 20%), 40%)};
+  --border-color: #{darken(saturate($color, 20%), 50%)};
 }
 
 
