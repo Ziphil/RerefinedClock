@@ -9,18 +9,18 @@ export class LiteralUtilType<T extends string> {
 
   private values: Array<T>;
   public defaultValue: T;
-  public is: (value: string) => value is T;
 
-  private constructor(values: Array<T>, defaultValue: T, is: (value: string) => value is T) {
+  private constructor(values: Array<T>, defaultValue: T) {
     this.values = values;
     this.defaultValue = defaultValue;
-    this.is = is;
   }
 
   public cast(value: string | number | null): T {
     if (typeof value === "string") {
-      if (this.is(value)) {
-        return value;
+      let castValue = value as T;
+      let index = this.values.indexOf(castValue);
+      if (index >= 0) {
+        return this.values[index];
       } else {
         return this.defaultValue;
       }
@@ -42,8 +42,8 @@ export class LiteralUtilType<T extends string> {
   }
 
   public previous(value: string): T {
-    let anyValue = value as any;
-    let index = this.values.indexOf(anyValue);
+    let castValue = value as T;
+    let index = this.values.indexOf(castValue);
     if (index >= 0) {
       let previousIndex = FloorMath.mod(index - 1, this.values.length);
       return this.values[previousIndex];
@@ -53,8 +53,8 @@ export class LiteralUtilType<T extends string> {
   }
 
   public next(value: string): T {
-    let anyValue = value as any;
-    let index = this.values.indexOf(anyValue);
+    let castValue = value as T;
+    let index = this.values.indexOf(castValue);
     if (index >= 0) {
       let nextIndex = FloorMath.mod(index + 1, this.values.length);
       return this.values[nextIndex];
@@ -66,11 +66,7 @@ export class LiteralUtilType<T extends string> {
   public static create<T extends string>(values: {0: T} & ArrayLike<T>): LiteralUtilType<T> {
     let castValues = Array.from(values);
     let defaultValue = values[0];
-    let is = function (value: string): value is T {
-      let anyValue = value as any;
-      return castValues.indexOf(anyValue) >= 0;
-    };
-    let result = new LiteralUtilType(castValues, defaultValue, is);
+    let result = new LiteralUtilType(castValues, defaultValue);
     return result;
   }
 
