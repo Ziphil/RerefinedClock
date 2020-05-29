@@ -17,22 +17,23 @@ export abstract class Calendar {
   public second: number | null = null;
 
   public constructor() {
-    this.update();
+    this.update(true);
   }
 
-  public abstract update(): void;
+  public abstract update(shift: boolean): void;
 
 }
 
 
 export class HairianCalendar extends Calendar {
 
-  public update(): void {
-    let date = new Date();
+  public update(shift: boolean): void {
+    let currentDate = new Date();
+    let date = (shift) ? new Date(currentDate.getTime() - 6 * 60 * 60 * 1000) : currentDate;
     let genesis = new Date(2012, 0, 23);
-    let basis = new Date(new Date().setHours(0, 0, 0, 0));
+    let basis = new Date(new Date(date).setHours(0, 0, 0, 0));
     let dayCount = FloorMath.div(date.getTime() - genesis.getTime(), 24 * 60 * 60 * 1000) + 547863;
-    let secondCount = Math.floor((date.getTime() - basis.getTime()) / 1000 / 86400 * 100000);
+    let secondCount = Math.floor((date.getTime() - basis.getTime()) / 1000 / 86400 * 100000) + ((shift) ? 25000 : 0);
     let rawYear = FloorMath.div(dayCount * 4 + 3 + FloorMath.div((FloorMath.div((dayCount + 1) * 4, 146097) * 3 + 1) * 4, 4), 1461);
     let remainder = dayCount - (rawYear * 365 + FloorMath.div(rawYear, 4) - FloorMath.div(rawYear, 100) + FloorMath.div(rawYear, 400));
     this.year = rawYear + 1;
@@ -50,8 +51,9 @@ export class HairianCalendar extends Calendar {
 
 export class GregorianCalendar extends Calendar {
 
-  public update(): void {
-    let date = new Date();
+  public update(shift: boolean): void {
+    let currentDate = new Date();
+    let date = (shift) ? new Date(currentDate.getTime() - 6 * 60 * 60 * 1000) : currentDate;
     let genesis = new Date(2012, 0, 23);
     let dayCount = FloorMath.div(date.getTime() - genesis.getTime(), 24 * 60 * 60 * 1000);
     this.year = date.getFullYear();
@@ -59,7 +61,7 @@ export class GregorianCalendar extends Calendar {
     this.day = date.getDate();
     this.weekday = date.getDay();
     this.hairia = dayCount + 1;
-    this.hour = date.getHours();
+    this.hour = (shift) ? date.getHours() + 6 : date.getHours();
     this.minute = date.getMinutes();
     this.second = date.getSeconds();
   }

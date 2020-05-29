@@ -26,6 +26,7 @@ export class ClockPage extends PageComponent<Props, State> {
 
   public state: State = {
     mode: "gregorian",
+    shift: true,
     gregorianCalendar: new GregorianCalendar(),
     hairianCalendar: new HairianCalendar()
   };
@@ -37,7 +38,10 @@ export class ClockPage extends PageComponent<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.timer = setInterval(() => this.setState({}), 10);
-    window.addEventListener("keydown", this.toggleMode);
+    window.addEventListener("keydown", (event) => {
+      this.toggleMode(event);
+      this.toggleShift(event);
+    });
   }
 
   public async componentWillUnmount(): Promise<void> {
@@ -58,9 +62,18 @@ export class ClockPage extends PageComponent<Props, State> {
     }
   }
 
+  private toggleShift(event: KeyboardEvent): void {
+    let key = event.key;
+    if (key === "ArrowUp" || key === "ArrowDown") {
+      let shift = !this.state.shift;
+      this.setState({shift});
+    }
+  }
+
   private updateCalendars(): void {
-    this.state.gregorianCalendar.update();
-    this.state.hairianCalendar.update();
+    let shift = this.state.shift;
+    this.state.gregorianCalendar.update(shift);
+    this.state.hairianCalendar.update(shift);
   }
 
   public render(): ReactNode {
@@ -90,6 +103,7 @@ type Props = {
 };
 type State = {
   mode: CalendarMode,
+  shift: boolean,
   gregorianCalendar: GregorianCalendar,
   hairianCalendar: HairianCalendar
 };
