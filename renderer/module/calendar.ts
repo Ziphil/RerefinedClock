@@ -22,23 +22,54 @@ export abstract class Calendar {
 
   public abstract update(shift: boolean): void;
 
+  protected getCurrentDate(): Date {
+    return new Date();
+  }
+
+  protected getShiftedDate(shift: boolean): Date {
+    let currentDate = this.getCurrentDate();
+    if (shift) {
+      return new Date(currentDate.getTime() - 6 * 60 * 60 * 1000);
+    } else {
+      return currentDate;
+    }
+  }
+
+  protected getGenesis(): Date {
+    return new Date(2012, 0, 23);
+  }
+
+  protected getBasis(date: Date): Date {
+    return new Date(new Date(date).setHours(0, 0, 0, 0));
+  }
+
+  // 与えられた日時について、ハイリア暦起日からの完全な経過日数を整数で返します。
+  // ハイリア暦起日を与えた場合は 0 を返すので、ハイリア数とは値が 1 ずれるので注意してください。
+  protected calcDayCount(date: Date): number {
+    let count = FloorMath.div(date.getTime() - this.getGenesis().getTime(), 24 * 60 * 60 * 1000);
+    return count;
+  }
+
+  // 与えられた日時について、その日の 0 時からの完全な経過秒数を整数で返します。
+  protected calcSecondCount(date: Date, ratio: number = 1): number {
+    let count = Math.floor((date.getTime() - this.getBasis(date).getTime()) / 1000 * ratio);
+    return count;
+  }
+
 }
 
 
 export class HairianCalendar extends Calendar {
 
   public update(shift: boolean): void {
-    let currentDate = new Date();
-    let date = (shift) ? new Date(currentDate.getTime() - 6 * 60 * 60 * 1000) : currentDate;
-    let genesis = new Date(2012, 0, 23);
-    let basis = new Date(new Date(date).setHours(0, 0, 0, 0));
-    let dayCount = FloorMath.div(date.getTime() - genesis.getTime(), 24 * 60 * 60 * 1000) + 547863;
-    let secondCount = Math.floor((date.getTime() - basis.getTime()) / 1000 / 86400 * 100000) + ((shift) ? 25000 : 0);
+    let date = this.getShiftedDate(shift);
+    let dayCount = this.calcDayCount(date) + 547863;
+    let secondCount = this.calcSecondCount(date, 100000 / 86400) + ((shift) ? 25000 : 0);
     let rawYear = FloorMath.div(dayCount * 4 + 3 + FloorMath.div((FloorMath.div((dayCount + 1) * 4, 146097) * 3 + 1) * 4, 4), 1461);
-    let remainder = dayCount - (rawYear * 365 + FloorMath.div(rawYear, 4) - FloorMath.div(rawYear, 100) + FloorMath.div(rawYear, 400));
+    let rawDay = dayCount - (rawYear * 365 + FloorMath.div(rawYear, 4) - FloorMath.div(rawYear, 100) + FloorMath.div(rawYear, 400));
     this.year = rawYear + 1;
-    this.month = FloorMath.div(remainder, 33) + 1;
-    this.day = FloorMath.mod(remainder, 33) + 1;
+    this.month = FloorMath.div(rawDay, 33) + 1;
+    this.day = FloorMath.mod(rawDay, 33) + 1;
     this.weekday = date.getDay();
     this.hairia = dayCount - 547862;
     this.hour = FloorMath.div(secondCount, 10000);
@@ -52,10 +83,8 @@ export class HairianCalendar extends Calendar {
 export class GregorianCalendar extends Calendar {
 
   public update(shift: boolean): void {
-    let currentDate = new Date();
-    let date = (shift) ? new Date(currentDate.getTime() - 6 * 60 * 60 * 1000) : currentDate;
-    let genesis = new Date(2012, 0, 23);
-    let dayCount = FloorMath.div(date.getTime() - genesis.getTime(), 24 * 60 * 60 * 1000);
+    let date = this.getShiftedDate(shift);
+    let dayCount = this.calcDayCount(date);
     this.year = date.getFullYear();
     this.month = date.getMonth() + 1;
     this.day = date.getDate();
