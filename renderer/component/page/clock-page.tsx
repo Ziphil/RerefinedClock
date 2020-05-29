@@ -25,7 +25,9 @@ export class ClockPage extends PageComponent<Props, State> {
   private timer: any | null = null;
 
   public state: State = {
-    mode: "gregorian"
+    mode: "gregorian",
+    gregorianCalendar: new GregorianCalendar(),
+    hairianCalendar: new HairianCalendar()
   };
 
   public constructor(props: any) {
@@ -56,16 +58,21 @@ export class ClockPage extends PageComponent<Props, State> {
     }
   }
 
+  private updateCalendars(): void {
+    this.state.gregorianCalendar.update();
+    this.state.hairianCalendar.update();
+  }
+
   public render(): ReactNode {
-    let date = new Date();
+    this.updateCalendars();
     let calendar = (() => {
       let mode = this.state.mode;
       if (mode === "gregorian") {
-        return new GregorianCalendar(date);
+        return this.state.gregorianCalendar;
       } else if (mode === "hairian") {
-        return new HairianCalendar(date);
+        return this.state.hairianCalendar;
       } else {
-        return new GregorianCalendar(date);
+        return this.state.gregorianCalendar;
       }
     })();
     let node = (
@@ -82,7 +89,9 @@ export class ClockPage extends PageComponent<Props, State> {
 type Props = {
 };
 type State = {
-  mode: CalendarMode
+  mode: CalendarMode,
+  gregorianCalendar: GregorianCalendar,
+  hairianCalendar: HairianCalendar
 };
 
 const CALENDAR_MODES = ["gregorian", "hairian", "stopwatch"] as const;

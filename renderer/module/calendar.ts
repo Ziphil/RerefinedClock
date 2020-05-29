@@ -16,18 +16,19 @@ export abstract class Calendar {
   public minute: number | null = null;
   public second: number | null = null;
 
-  public constructor(date: Date) {
-    this.calculate(date);
+  public constructor() {
+    this.update();
   }
 
-  protected abstract calculate(date: Date): void;
+  public abstract update(): void;
 
 }
 
 
 export class HairianCalendar extends Calendar {
 
-  protected calculate(date: Date): void {
+  public update(): void {
+    let date = new Date();
     let genesis = new Date(2012, 0, 23);
     let basis = new Date(new Date().setHours(0, 0, 0, 0));
     let dayCount = FloorMath.div(date.getTime() - genesis.getTime(), 24 * 60 * 60 * 1000) + 547863;
@@ -49,7 +50,8 @@ export class HairianCalendar extends Calendar {
 
 export class GregorianCalendar extends Calendar {
 
-  protected calculate(date: Date): void {
+  public update(): void {
+    let date = new Date();
     let genesis = new Date(2012, 0, 23);
     let dayCount = FloorMath.div(date.getTime() - genesis.getTime(), 24 * 60 * 60 * 1000);
     this.year = date.getFullYear();
