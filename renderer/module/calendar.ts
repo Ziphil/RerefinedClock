@@ -16,10 +16,6 @@ export abstract class Calendar {
   public minute: number | null = null;
   public second: number | null = null;
 
-  public constructor() {
-    this.update(true);
-  }
-
   public abstract update(shift: boolean): void;
 
   protected getCurrentDate(): Date {
@@ -93,6 +89,56 @@ export class GregorianCalendar extends Calendar {
     this.hour = (shift) ? date.getHours() + 6 : date.getHours();
     this.minute = date.getMinutes();
     this.second = date.getSeconds();
+  }
+
+}
+
+
+export class StopwatchCalendar extends Calendar {
+
+  private lastDate: Date | null = null;
+  private offset: number = 0;
+
+  public update(shift: boolean): void {
+    let rawDate = this.getCurrentDate();
+    let date = this.getShiftedDate(shift);
+    let duration = ((this.lastDate !== null) ? rawDate.getTime() - this.lastDate.getTime() : 0) + this.offset;
+    this.year = null;
+    this.month = null;
+    this.day = null;
+    this.hairia = null;
+    this.weekday = date.getDay();
+    this.hour = FloorMath.div(FloorMath.mod(duration, 360000000), 3600000);
+    this.minute = FloorMath.div(FloorMath.mod(duration, 3600000), 60000);
+    this.second = FloorMath.div(FloorMath.mod(duration, 60000), 1000);
+  }
+
+  public start(): void {
+    let rawDate = this.getCurrentDate();
+    this.lastDate = rawDate;
+  }
+
+  public stop(): void {
+    let rawDate = this.getCurrentDate();
+    this.offset += (this.lastDate !== null) ? rawDate.getTime() - this.lastDate.getTime() : 0;
+    this.lastDate = null;
+  }
+
+  public startOrStop(): void {
+    if (this.lastDate === null) {
+      this.start();
+    } else {
+      this.stop();
+    }
+  }
+
+  public reset(): void {
+    this.lastDate = null;
+    this.offset = 0;
+  }
+
+  public addOffset(amount: number): void {
+    this.offset += amount;
   }
 
 }

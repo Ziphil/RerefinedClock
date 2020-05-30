@@ -6,7 +6,8 @@ import {
 } from "react";
 import {
   GregorianCalendar,
-  HairianCalendar
+  HairianCalendar,
+  StopwatchCalendar
 } from "../../module/calendar";
 import {
   LiteralType,
@@ -26,7 +27,8 @@ export class ClockPage extends PageComponent<Props, State> {
     mode: "gregorian",
     shift: true,
     gregorianCalendar: new GregorianCalendar(),
-    hairianCalendar: new HairianCalendar()
+    hairianCalendar: new HairianCalendar(),
+    stopwatchCalendar: new StopwatchCalendar()
   };
 
   public async componentDidMount(): Promise<void> {
@@ -36,6 +38,9 @@ export class ClockPage extends PageComponent<Props, State> {
     window.addEventListener("keydown", (event) => {
       this.toggleMode(event);
       this.toggleShift(event);
+      if (this.state.mode === "stopwatch") {
+        this.operateStopwatch(event);
+      }
     });
   }
 
@@ -58,10 +63,33 @@ export class ClockPage extends PageComponent<Props, State> {
     }
   }
 
+  private operateStopwatch(event: KeyboardEvent): void {
+    let key = event.key;
+    let calendar = this.state.stopwatchCalendar;
+    if (key === " " || key === "Enter") {
+      calendar.startOrStop();
+    } else if (key === "Backspace") {
+      calendar.reset();
+    } else if (key === "7") {
+      calendar.addOffset(3600000);
+    } else if (key === "1") {
+      calendar.addOffset(-3600000);
+    } else if (key === "8") {
+      calendar.addOffset(60000);
+    } else if (key === "2") {
+      calendar.addOffset(-60000);
+    } else if (key === "9") {
+      calendar.addOffset(1000);
+    } else if (key === "3") {
+      calendar.addOffset(-1000);
+    }
+  }
+
   private updateCalendars(): void {
     let shift = this.state.shift;
     this.state.gregorianCalendar.update(shift);
     this.state.hairianCalendar.update(shift);
+    this.state.stopwatchCalendar.update(shift);
   }
 
   public render(): ReactNode {
@@ -73,7 +101,7 @@ export class ClockPage extends PageComponent<Props, State> {
       } else if (mode === "hairian") {
         return this.state.hairianCalendar;
       } else {
-        return this.state.gregorianCalendar;
+        return this.state.stopwatchCalendar;
       }
     })();
     let node = (
@@ -93,7 +121,8 @@ type State = {
   mode: CalendarMode,
   shift: boolean,
   gregorianCalendar: GregorianCalendar,
-  hairianCalendar: HairianCalendar
+  hairianCalendar: HairianCalendar,
+  stopwatchCalendar: StopwatchCalendar
 };
 
 const CALENDAR_MODES = ["gregorian", "hairian", "stopwatch"] as const;
