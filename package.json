@@ -15,7 +15,7 @@
   },
   "build": {
     "appId": "com.ziphil.clock",
-    "productName": "Keyboard",
+    "productName": "Clock",
     "files": [
       "dist/**/*"
     ],
