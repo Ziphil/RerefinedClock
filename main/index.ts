@@ -5,7 +5,8 @@ import {
   BrowserWindow,
   BrowserWindowConstructorOptions,
   app as electronApp,
-  ipcMain
+  ipcMain,
+  screen
 } from "electron";
 import {
   client
@@ -21,6 +22,7 @@ const COMMON_WINDOW_OPTIONS = {
   toolbar: false,
   alwaysOnTop: true,
   resizable: true,
+  maximizable: false,
   fullscreenable: false,
   autoHideMenuBar: true,
   acceptFirstMouse: true,
@@ -84,6 +86,15 @@ class Main {
         window.setContentSize(width, height);
       }
     });
+    ipcMain.on("move-default-position", (event, id) => {
+      let window = this.windows.get(id);
+      if (window !== undefined) {
+        let displayBounds = screen.getPrimaryDisplay().bounds;
+        let x = displayBounds.width - 380 - 20;
+        let y = displayBounds.height - 120 - 40;
+        window.setPosition(x, y);
+      }
+    });
   }
 
   private createWindow(mode: string, parentId: string | null, props: object, options: BrowserWindowConstructorOptions): BrowserWindow {
@@ -105,7 +116,10 @@ class Main {
   }
 
   private createMainWindow(): BrowserWindow {
-    let options = {width: 380, height: 200, minWidth: 380, minHeight: 200};
+    let displayBounds = screen.getPrimaryDisplay().bounds;
+    let x = displayBounds.width - 380 - 20;
+    let y = displayBounds.height - 120 - 40;
+    let options = {width: 380, height: 120, minWidth: 380, minHeight: 120, x, y};
     let window = this.createWindow("clock", null, {}, options);
     this.connectReloadClient(window);
     return window;

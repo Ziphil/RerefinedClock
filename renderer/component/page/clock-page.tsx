@@ -1,5 +1,8 @@
 //
 
+import {
+  ipcRenderer
+} from "electron";
 import * as react from "react";
 import {
   ReactNode
@@ -38,6 +41,7 @@ export class ClockPage extends PageComponent<Props, State> {
     window.addEventListener("keydown", (event) => {
       this.toggleMode(event);
       this.toggleShift(event);
+      this.moveDefaultPosition(event);
       if (this.state.mode === "stopwatch") {
         this.operateStopwatch(event);
       }
@@ -82,6 +86,14 @@ export class ClockPage extends PageComponent<Props, State> {
       calendar.addOffset(1000);
     } else if (key === "3") {
       calendar.addOffset(-1000);
+    }
+  }
+
+  private moveDefaultPosition(event: KeyboardEvent): void {
+    let key = event.key;
+    if (key === "F5") {
+      let id = this.props.id;
+      ipcRenderer.send("move-default-position", id);
     }
   }
 
