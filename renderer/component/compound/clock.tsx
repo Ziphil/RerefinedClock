@@ -21,21 +21,27 @@ export class Clock extends Component<Props, State> {
   public render(): ReactNode {
     let calendar = this.props.calendar;
     let weekday = WeekdayUtil.cast(calendar.weekday);
+    let showDate = calendar.year !== null && calendar.month !== null && calendar.day !== null;
+    let showHairia = calendar.hairia !== null;
+    let showTime = calendar.hour !== null && calendar.minute !== null && calendar.second !== null;
+    let dateClassNames = ["date", (showDate) ? undefined : "hidden"];
+    let hairiaClassNames = ["hairia", (showHairia) ? undefined : "hidden"];
+    let timeClassNames = ["time", (showTime) ? undefined : "hidden"];
     let node = (
       <div className="clock-root">
         <div className="date-wrapper">
-          <div className="date">
+          <div className={dateClassNames.join(" ")}>
             <Letter content={calendar.year} length={4} weekday={weekday} size="small"/>
             <Letter className="slash" content="/" weekday={weekday} size="small"/>
             <Letter content={calendar.month} length={2} weekday={weekday} size="small"/>
             <Letter className="slash" content="/" weekday={weekday} size="small"/>
             <Letter content={calendar.day} length={2} weekday={weekday} size="small"/>
           </div>
-          <div className="hairia">
+          <div className={hairiaClassNames.join(" ")}>
             <Letter content={calendar.hairia} length={4} weekday={weekday} size="small"/>
           </div>
         </div>
-        <div className="time">
+        <div className={timeClassNames.join(" ")}>
           <Letter content={calendar.hour} length={2} weekday={weekday}/>
           <Letter className="colon" content=":" weekday={weekday}/>
           <Letter content={calendar.minute} length={2} weekday={weekday}/>
