@@ -89,10 +89,7 @@ class Main {
     ipcMain.on("move-default-position", (event, id) => {
       let window = this.windows.get(id);
       if (window !== undefined) {
-        let displayBounds = screen.getPrimaryDisplay().bounds;
-        let x = displayBounds.width - 380 - 20;
-        let y = displayBounds.height - 120 - 40;
-        window.setPosition(x, y);
+        this.moveDefaultPosition(window);
       }
     });
   }
@@ -116,13 +113,19 @@ class Main {
   }
 
   private createMainWindow(): BrowserWindow {
-    let displayBounds = screen.getPrimaryDisplay().bounds;
-    let x = displayBounds.width - 380 - 20;
-    let y = displayBounds.height - 120 - 40;
-    let options = {width: 380, height: 120, minWidth: 380, minHeight: 120, x, y};
+    let options = {width: 380, height: 120, minWidth: 380, minHeight: 120};
     let window = this.createWindow("clock", null, {}, options);
+    this.moveDefaultPosition(window);
     this.connectReloadClient(window);
     return window;
+  }
+
+  private moveDefaultPosition(window: BrowserWindow): void {
+    let displayBounds = screen.getPrimaryDisplay().bounds;
+    let windowBounds = window.getBounds();
+    let x = displayBounds.width - windowBounds.width - 20;
+    let y = displayBounds.height - windowBounds.height - 40;
+    window.setPosition(x, y);
   }
 
   private connectReloadClient(window: BrowserWindow): void {
