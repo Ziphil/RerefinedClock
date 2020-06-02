@@ -19,6 +19,7 @@ export class Letter extends Component<Props, State> {
     content: "",
     length: 1,
     weekday: "sunday",
+    holiday: false,
     size: "large"
   };
 
@@ -36,7 +37,7 @@ export class Letter extends Component<Props, State> {
 
   public render(): ReactNode {
     let classNames = ["letter-root", this.props.size, this.props.className];
-    let digitClassNames = ["letter-digit", this.props.weekday];
+    let digitClassNames = ["letter-digit", this.props.weekday, (this.props.holiday) ? "holiday" : undefined];
     let string = this.createString();
     let stringNodes = string.split("").map((char, index) => {
       let stringNode = <div className={digitClassNames.join(" ")} data-char={char} key={index}>{char}</div>;
@@ -57,6 +58,7 @@ type Props = {
   content: number | string | null,
   length: number,
   weekday: Weekday,
+  holiday: boolean,
   size: "large" | "small",
   className?: string
 };
