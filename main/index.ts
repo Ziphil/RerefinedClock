@@ -22,6 +22,7 @@ const COMMON_WINDOW_OPTIONS = {
   toolbar: false,
   alwaysOnTop: true,
   resizable: true,
+  minimizable: false,
   maximizable: false,
   fullscreenable: false,
   skipTaskbar: true,
