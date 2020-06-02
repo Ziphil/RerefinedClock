@@ -1,8 +1,12 @@
 //
 
+import * as Holidays from "date-holidays";
 import {
   FloorMath
 } from "./floor-math";
+
+
+const HOLIDAYS = new Holidays("JP");
 
 
 export abstract class Calendar {
@@ -15,6 +19,7 @@ export abstract class Calendar {
   public hour: number | null = null;
   public minute: number | null = null;
   public second: number | null = null;
+  public holiday: boolean = false;
 
   public abstract update(shift: boolean): void;
 
@@ -71,6 +76,7 @@ export class HairianCalendar extends Calendar {
     this.hour = FloorMath.div(secondCount, 10000);
     this.minute = FloorMath.div(FloorMath.mod(secondCount, 10000), 100);
     this.second = FloorMath.mod(secondCount, 10000);
+    this.holiday = !!HOLIDAYS.isHoliday(date);
   }
 
 }
@@ -89,6 +95,7 @@ export class GregorianCalendar extends Calendar {
     this.hour = (shift) ? date.getHours() + 6 : date.getHours();
     this.minute = date.getMinutes();
     this.second = date.getSeconds();
+    this.holiday = !!HOLIDAYS.isHoliday(date);
   }
 
 }
@@ -111,6 +118,7 @@ export class StopwatchCalendar extends Calendar {
     this.hour = FloorMath.div(FloorMath.mod(duration, 360000000), 3600000);
     this.minute = FloorMath.div(FloorMath.mod(duration, 3600000), 60000);
     this.second = FloorMath.div(FloorMath.mod(duration, 60000), 1000);
+    this.holiday = !!HOLIDAYS.isHoliday(date);
   }
 
   public start(): void {
