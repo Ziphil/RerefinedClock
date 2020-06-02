@@ -124,7 +124,7 @@ class Main {
   private moveDefaultPosition(window: BrowserWindow): void {
     let displayBounds = screen.getPrimaryDisplay().bounds;
     let windowBounds = window.getBounds();
-    let x = displayBounds.width - windowBounds.width - 20;
+    let x = displayBounds.width - windowBounds.width - 15;
     let y = displayBounds.height - windowBounds.height - 40;
     window.setPosition(x, y);
   }
