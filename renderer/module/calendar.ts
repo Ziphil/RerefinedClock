@@ -6,6 +6,7 @@ import {
 } from "./floor-math";
 
 
+const GENESIS = new Date(2012, 0, 23, 0, 0, 0);
 const HOLIDAYS = new Holidays("JP");
 
 
@@ -37,7 +38,7 @@ export abstract class Calendar {
   }
 
   protected getGenesis(): Date {
-    return new Date(2012, 0, 23);
+    return GENESIS;
   }
 
   protected getBasis(date: Date): Date {
