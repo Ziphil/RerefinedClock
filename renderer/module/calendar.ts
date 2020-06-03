@@ -21,8 +21,22 @@ export abstract class Calendar {
   public minute: number | null = null;
   public second: number | null = null;
   public holiday: boolean = false;
+  protected cachedDate: Date | null = null;
+  protected cachedShift: boolean | null = null;
 
-  public abstract update(shift: boolean): void;
+  public update(shift: boolean): void {
+    let date = this.getShiftedDate(shift);
+    let cachedDate = this.cachedDate;
+    let cachedShift = this.cachedShift;
+    let hasCache = cachedDate !== null && cachedShift !== null;
+    let sameDay = cachedDate?.getFullYear() === date.getFullYear() && cachedDate?.getMonth() === date.getMonth() && cachedDate?.getDate() === date.getDate() && cachedShift === shift;
+    if (!hasCache || !sameDay) {
+      this.weekday = date.getDay();
+      this.holiday = !!HOLIDAYS.isHoliday(date);
+      this.cachedDate = date;
+      this.cachedShift = shift;
+    }
+  }
 
   protected getCurrentDate(): Date {
     return new Date();
@@ -72,12 +86,11 @@ export class HairianCalendar extends Calendar {
     this.year = rawYear + 1;
     this.month = FloorMath.div(rawDay, 33) + 1;
     this.day = FloorMath.mod(rawDay, 33) + 1;
-    this.weekday = date.getDay();
     this.hairia = dayCount - 547862;
     this.hour = FloorMath.div(secondCount, 10000);
     this.minute = FloorMath.div(FloorMath.mod(secondCount, 10000), 100);
     this.second = FloorMath.mod(secondCount, 10000);
-    this.holiday = !!HOLIDAYS.isHoliday(date);
+    super.update(shift);
   }
 
 }
@@ -91,12 +104,11 @@ export class GregorianCalendar extends Calendar {
     this.year = date.getFullYear();
     this.month = date.getMonth() + 1;
     this.day = date.getDate();
-    this.weekday = date.getDay();
     this.hairia = dayCount + 1;
     this.hour = (shift) ? date.getHours() + 6 : date.getHours();
     this.minute = date.getMinutes();
     this.second = date.getSeconds();
-    this.holiday = !!HOLIDAYS.isHoliday(date);
+    super.update(shift);
   }
 
 }
@@ -108,28 +120,26 @@ export class StopwatchCalendar extends Calendar {
   private offset: number = 0;
 
   public update(shift: boolean): void {
-    let rawDate = this.getCurrentDate();
-    let date = this.getShiftedDate(shift);
-    let duration = ((this.lastDate !== null) ? rawDate.getTime() - this.lastDate.getTime() : 0) + this.offset;
+    let date = this.getCurrentDate();
+    let duration = ((this.lastDate !== null) ? date.getTime() - this.lastDate.getTime() : 0) + this.offset;
     this.year = null;
     this.month = null;
     this.day = null;
     this.hairia = null;
-    this.weekday = date.getDay();
     this.hour = FloorMath.div(FloorMath.mod(duration, 360000000), 3600000);
     this.minute = FloorMath.div(FloorMath.mod(duration, 3600000), 60000);
     this.second = FloorMath.div(FloorMath.mod(duration, 60000), 1000);
-    this.holiday = !!HOLIDAYS.isHoliday(date);
+    super.update(shift);
   }
 
   public start(): void {
-    let rawDate = this.getCurrentDate();
-    this.lastDate = rawDate;
+    let date = this.getCurrentDate();
+    this.lastDate = date;
   }
 
   public stop(): void {
-    let rawDate = this.getCurrentDate();
-    this.offset += (this.lastDate !== null) ? rawDate.getTime() - this.lastDate.getTime() : 0;
+    let date = this.getCurrentDate();
+    this.offset += (this.lastDate !== null) ? date.getTime() - this.lastDate.getTime() : 0;
     this.lastDate = null;
   }
 
