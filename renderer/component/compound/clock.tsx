@@ -13,7 +13,7 @@ import {
 import {
   Letter,
   WeekdayUtil
-} from "./";
+} from ".";
 
 
 export class Clock extends Component<Props, State> {
