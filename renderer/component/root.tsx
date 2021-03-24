@@ -12,7 +12,6 @@ import {
 import {
   ClockPage
 } from "./page/clock-page";
-import "./root.scss";
 
 
 export class Root extends Component<Props, State> {
