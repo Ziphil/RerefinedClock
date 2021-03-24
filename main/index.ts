@@ -25,7 +25,6 @@ const COMMON_WINDOW_OPTIONS = {
   minimizable: false,
   maximizable: false,
   fullscreenable: false,
-  skipTaskbar: true,
   autoHideMenuBar: true,
   acceptFirstMouse: true,
   useContentSize: true,
