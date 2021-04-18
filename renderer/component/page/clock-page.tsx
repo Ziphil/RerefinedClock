@@ -15,7 +15,7 @@ import {
 import {
   LiteralType,
   LiteralUtilType
-} from "../../module/literal-util";
+} from "../../module/literal-type";
 import {
   PageComponent
 } from "../component";

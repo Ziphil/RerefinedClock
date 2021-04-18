@@ -8,6 +8,9 @@ import {
   Calendar
 } from "../../module/calendar";
 import {
+  StringUtil
+} from "../../module/string";
+import {
   Component
 } from "../component";
 import {
@@ -32,22 +35,22 @@ export class Clock extends Component<Props, State> {
       <div className="clock-root">
         <div className="date-wrapper">
           <div className={dateClassNames.join(" ")}>
-            <Letter content={calendar.year} length={4} weekday={weekday} holiday={holiday} size="small"/>
+            <Letter content={StringUtil.padZero(calendar.year, 4)} weekday={weekday} holiday={holiday} size="small"/>
             <Letter className="slash" content="/" weekday={weekday} holiday={holiday} size="small"/>
-            <Letter content={calendar.month} length={2} weekday={weekday} holiday={holiday} size="small"/>
+            <Letter content={StringUtil.padZero(calendar.month, 2)} weekday={weekday} holiday={holiday} size="small"/>
             <Letter className="slash" content="/" weekday={weekday} holiday={holiday} size="small"/>
-            <Letter content={calendar.day} length={2} weekday={weekday} holiday={holiday} size="small"/>
+            <Letter content={StringUtil.padZero(calendar.day, 2)} weekday={weekday} holiday={holiday} size="small"/>
           </div>
           <div className={hairiaClassNames.join(" ")}>
-            <Letter content={calendar.hairia} length={4} weekday={weekday} holiday={holiday} size="small"/>
+            <Letter content={StringUtil.padZero(calendar.hairia, 4)} weekday={weekday} holiday={holiday} size="small"/>
           </div>
         </div>
         <div className={timeClassNames.join(" ")}>
-          <Letter content={calendar.hour} length={2} weekday={weekday} holiday={holiday}/>
+          <Letter content={StringUtil.padZero(calendar.hour, 2)} weekday={weekday} holiday={holiday}/>
           <Letter className="colon" content=":" weekday={weekday} holiday={holiday}/>
-          <Letter content={calendar.minute} length={2} weekday={weekday} holiday={holiday}/>
+          <Letter content={StringUtil.padZero(calendar.minute, 2)} weekday={weekday} holiday={holiday}/>
           <Letter className="colon" content=":" weekday={weekday} holiday={holiday}/>
-          <Letter content={calendar.second} length={2} weekday={weekday} holiday={holiday}/>
+          <Letter content={StringUtil.padZero(calendar.second, 2)} weekday={weekday} holiday={holiday}/>
         </div>
       </div>
     );
