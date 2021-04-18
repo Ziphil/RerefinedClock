@@ -84,7 +84,7 @@ export class HairianCalendar extends Calendar {
     let secondCount = this.calcSecondCount(date, 100000 / 86400) + ((shift) ? 25000 : 0);
     let rawYear = FloorMath.div(dayCount * 4 + 3 + FloorMath.div((FloorMath.div((dayCount + 1) * 4, 146097) * 3 + 1) * 4, 4), 1461);
     let rawDay = dayCount - (rawYear * 365 + FloorMath.div(rawYear, 4) - FloorMath.div(rawYear, 100) + FloorMath.div(rawYear, 400));
-    this.type = "ht";
+    this.type = "HT";
     this.year = rawYear - 1500 + 1;
     this.month = FloorMath.div(rawDay, 33) + 1;
     this.day = FloorMath.mod(rawDay, 33) + 1;

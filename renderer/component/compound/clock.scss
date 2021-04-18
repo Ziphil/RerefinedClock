@@ -8,13 +8,25 @@
 }
 
 .date-wrapper {
+  font-size: 40px;
   display: flex;
   justify-content: space-between;
 }
 
 .time {
   margin: -3px 0px 0px 0px;
+  font-size: 80px;
   justify-content: flex-end;
+}
+
+.year-wrapper {
+  position: relative;
+}
+
+.year-wrapper .type {
+  font-size: 70%;
+  position: absolute;
+  bottom: 1px;
 }
 
 .hairia {
